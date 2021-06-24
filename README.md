@@ -1,2 +1,99 @@
-# Sudoku
-Sudoku Solver C++
+#include <iostream>
+#include <cmath>
+using namespace std;
+bool CanPlace(int sudoku[][9],int i,int j,int n,int number){
+///checking current row and column
+for(int x=0;x<n;x++){
+if (sudoku[x][j]==number || sudoku[i][x]==number) ///checking along rows in a particular column j   ///checking along columns in a particular row i){
+{
+      return false;
+}
+
+}
+
+
+///checking in a sub-matrix
+int rn=sqrt(n);
+int sx=(i/rn)*rn;
+int sy=(j/rn)*rn;
+
+for(int x=sx;x<sx+rn;x++){
+    for(int y=sy;y<sy+rn;y++){
+        if(sudoku[x][y]==number){
+            return false;
+        }
+    }
+}
+return true;
+}
+
+
+bool SolveSudoku(int sudoku[][9],int i,int j,int n){
+///base case
+if(i==n){
+///means our sudoku is solved and we have crossed last row
+///printing ans
+for(int i=0;i<n;i++){
+for(int j=0;j<n;j++){
+    cout<<sudoku[i][j]<<" ";
+}
+cout<<endl;
+}
+return true;
+
+}
+
+///j is column corresponding to each row and i is row
+///end of a particular row
+if(j==n){
+    return SolveSudoku(sudoku,i+1,0,n);
+}
+
+///skipping the already filled cell
+if(sudoku[i][j]!=0){
+    return SolveSudoku(sudoku,i,j+1,n);
+}
+
+
+///Rec. case
+for(int number=1;number<=n;number++){
+
+if(CanPlace(sudoku,i,j,n,number)){
+///assuming number can be placed in the current cell
+sudoku[i][j]=number;
+
+bool CanWeSolve=SolveSudoku(sudoku,i,j+1,n);
+
+if(CanWeSolve==true){
+        return true;
+}
+
+}
+
+}
+
+///backtracking if for loop does not return  true executed
+sudoku[i][j]=0;
+return false;
+
+}
+
+int main(){
+
+int sudoku[9][9]={
+ {5,3,0,0,7,0,0,0,0},
+ {6,0,0,1,9,5,0,0,0},
+ {0,9,8,0,0,0,0,6,0},
+ {8,0,0,0,6,0,0,0,3},
+ {4,0,0,8,0,3,0,0,1},
+ {7,0,0,0,2,0,0,0,6},
+ {0,6,0,0,0,0,2,8,0},
+ {0,0,0,4,1,9,0,0,5},
+ {0,0,0,0,8,0,0,7,9}
+
+     };
+
+SolveSudoku(sudoku,0,0,9);
+
+return 0;
+}
