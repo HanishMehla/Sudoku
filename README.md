@@ -1,5 +1,7 @@
 #include <iostream>
+      
 #include <cmath>
+      
 using namespace std;
 bool CanPlace(int sudoku[][9],int i,int j,int n,int number){
 ///checking current row and column
