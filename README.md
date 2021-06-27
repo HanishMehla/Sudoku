@@ -1,1 +1,1 @@
-# Sudoku Solver Programme in C++.
+# Sudoku Solver in C++.
